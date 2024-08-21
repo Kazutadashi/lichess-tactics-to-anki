@@ -9,6 +9,7 @@ import genanki
 import base64
 
 
+
 def determine_turn(fen):
     # Split the FEN string into its components
     fields = fen.split()
