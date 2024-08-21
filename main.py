@@ -69,20 +69,6 @@ def pgn_to_fen(pgn):
     return fen
 
 
-def fen_to_board(fen):
-    board = chess.Board(fen)
-
-    # Export the board to an SVG string
-    svg_data = chess.svg.board(board=board)
-
-    # Convert the SVG string to PNG using cairosvg and save it as an image
-    cairosvg.svg2png(bytestring=svg_data, write_to="chess_position.png")
-
-    # Load and display the image (optional)
-    img = Image.open("chess_position.png")
-    img.show()
-
-
 def get_anki_data_from_api(puzzle_link):
     # Define the API endpoint and game ID (you can replace this with the specific ID you want)
     api_url = puzzle_link
