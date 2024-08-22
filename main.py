@@ -9,7 +9,6 @@ import genanki
 import base64
 
 
-
 def determine_turn(fen):
     # Split the FEN string into its components
     fields = fen.split()
@@ -105,36 +104,24 @@ def generate_chess_position_png(pgn, puzzle_id):
         last_move = board.push_san(move)
 
     # Export the board to an SVG string
-    svg_data = chess.svg.board(board, lastmove=last_move)
+    svg_data = chess.svg.board(board, lastmove=last_move, size=1000, colors={'square dark': "#76808e", "square light": "#A0AEC0"})
+    print(svg_data)
 
     # Convert the SVG string to PNG using cairosvg and save it as an image
     cairosvg.svg2png(bytestring=svg_data, write_to=f"images/{puzzle_id}.png")
 
 
 puzzle_urls = [
-        "https://lichess.org/api/puzzle/grDx0",
-        "https://lichess.org/api/puzzle/aVe1x",
-        "https://lichess.org/api/puzzle/fi2Mt",
-        "https://lichess.org/api/puzzle/2vFLu",
-        "https://lichess.org/api/puzzle/Tg7mr",
-        "https://lichess.org/api/puzzle/Ov83I",
-        "https://lichess.org/api/puzzle/oxuVI",
-        "https://lichess.org/api/puzzle/SrGxS",
-        "https://lichess.org/api/puzzle/oCrVR",
-        "https://lichess.org/api/puzzle/XPXES",
-        "https://lichess.org/api/puzzle/K1Ici",
-        "https://lichess.org/api/puzzle/y31Ja",
-        "https://lichess.org/api/puzzle/9e5EW",
-        "https://lichess.org/api/puzzle/KMnND",
-        "https://lichess.org/api/puzzle/3yrTl",
-        "https://lichess.org/api/puzzle/4tiAD",
-        "https://lichess.org/api/puzzle/HtvwI"
+    "https://lichess.org/api/puzzle/ATSSe", "https://lichess.org/api/puzzle/5kHIg",
+    "https://lichess.org/api/puzzle/PD1fP", "https://lichess.org/api/puzzle/MLiqa",
+    "https://lichess.org/api/puzzle/uTR5C", "https://lichess.org/api/puzzle/54qbb",
+    "https://lichess.org/api/puzzle/YMCyG"
     ]
 
 # Define the Anki Model
 my_model = genanki.Model(
     1607392319,
-    'Python Chess Card',
+    'Genanki Chess Cards',
     fields=[
         {'name': 'Position'},
         {'name': 'Side to Move'},
@@ -145,7 +132,7 @@ my_model = genanki.Model(
     ],
     templates=[
         {
-            'name': 'Card 1',
+            'name': 'Genanki Chess Card',
 
             'qfmt': '''{{Position}}
             <br>
