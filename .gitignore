@@ -1,3 +1,5 @@
 images/
+lichess_puzzle_images/
 *.apkg
 .idea/
+pieces/

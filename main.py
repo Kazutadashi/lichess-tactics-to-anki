@@ -1,13 +1,14 @@
+import os
 import time
 import chess
 import chess.pgn
 import chess.svg
-from PIL import Image
 import cairosvg
 import requests
 import genanki
-import base64
 
+# Define the image directory and where to store the final deck
+IMAGE_DIR = 'lichess_puzzle_images/'  # Directory where images are stored
 
 def determine_turn(fen):
     # Split the FEN string into its components
@@ -91,7 +92,7 @@ def get_anki_data_from_api(puzzle_link):
         return None
 
 
-def generate_chess_position_png(pgn, puzzle_id):
+def generate_chess_position_png(pgn, puzzle_id, image_path):
     # Split the moves by space
     moves = pgn.split()
 
@@ -108,8 +109,11 @@ def generate_chess_position_png(pgn, puzzle_id):
     print(svg_data)
 
     # Convert the SVG string to PNG using cairosvg and save it as an image
-    cairosvg.svg2png(bytestring=svg_data, write_to=f"images/{puzzle_id}.png")
+    cairosvg.svg2png(bytestring=svg_data, write_to=f"{IMAGE_DIR}{puzzle_id}.png")
 
+
+# Ensure the output directory exists
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 puzzle_urls = [
     "https://lichess.org/api/puzzle/ATSSe", "https://lichess.org/api/puzzle/5kHIg",
@@ -117,6 +121,7 @@ puzzle_urls = [
     "https://lichess.org/api/puzzle/uTR5C", "https://lichess.org/api/puzzle/54qbb",
     "https://lichess.org/api/puzzle/YMCyG"
     ]
+
 
 # Define the Anki Model
 my_model = genanki.Model(
@@ -157,10 +162,7 @@ my_deck = genanki.Deck(
     2059400111,
     'Lichess Tactics')
 
-
-# Save the Deck to a File
-genanki.Package(my_deck).write_to_file('output.apkg')
-
+# Main card loop
 for puzzle in puzzle_urls:
 
     puzzle_data = get_anki_data_from_api(puzzle)
@@ -173,21 +175,21 @@ for puzzle in puzzle_urls:
     themes_data = puzzle_data[2]
     puzzle_id = puzzle[-5:]
 
-    generate_chess_position_png(pgn_data, puzzle_id=puzzle_id)
-
     # Path to the image you want to add
-    image_path = f'images/{puzzle_id}.png'
+    image_path = f'{IMAGE_DIR}{puzzle_id}.png'
 
-    # Read and encode the image in base64
-    with open(image_path, "rb") as image_file:
-        encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+    generate_chess_position_png(pgn_data, puzzle_id=puzzle_id, image_path=image_path)
 
-    # Create an img tag with the base64-encoded string
-    img_tag = f'<img src="data:image/png;base64,{encoded_string}">'
+    img_tag = f'<img src="{puzzle_id}.png">'
 
-    anki_card = {'Position': f'{img_tag}', 'Side to Move': determine_turn(fen_data), 'Solution': ', '.join(formatted_solution),
-                 'Themes': ', '.join(themes_data), 'Lichess Link': 'https://lichess.org/training/' + puzzle_id,
-                 'FEN': fen_data}
+    anki_card = {
+        'Position': f'{img_tag}',
+        'Side to Move': determine_turn(fen_data),
+        'Solution': ', '.join(formatted_solution),
+        'Themes': ', '.join(themes_data),
+        'Lichess Link': 'https://lichess.org/training/' + puzzle_id,
+        'FEN': fen_data
+    }
 
     # Step 1: Structure Your Data
     data = anki_card
