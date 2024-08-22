@@ -111,15 +111,8 @@ def generate_chess_position_png(pgn, puzzle_id, image_path):
     # Convert the SVG string to PNG using cairosvg and save it as an image
     cairosvg.svg2png(bytestring=svg_data, write_to=f"{IMAGE_DIR}{puzzle_id}.png")
 
-
-# Ensure the output directory exists
-os.makedirs(OUTPUT_DIR, exist_ok=True)
-
 puzzle_urls = [
-    "https://lichess.org/api/puzzle/ATSSe", "https://lichess.org/api/puzzle/5kHIg",
-    "https://lichess.org/api/puzzle/PD1fP", "https://lichess.org/api/puzzle/MLiqa",
-    "https://lichess.org/api/puzzle/uTR5C", "https://lichess.org/api/puzzle/54qbb",
-    "https://lichess.org/api/puzzle/YMCyG"
+    "https://lichess.org/api/puzzle/mIMNE", "https://lichess.org/api/puzzle/GhVXx", "https://lichess.org/api/puzzle/eAp73", "https://lichess.org/api/puzzle/eAp73", "https://lichess.org/api/puzzle/SjgSu", "https://lichess.org/api/puzzle/Bj2eF", "https://lichess.org/api/puzzle/FeXN1", "https://lichess.org/api/puzzle/e1HsI", "https://lichess.org/api/puzzle/A3RFH", "https://lichess.org/api/puzzle/zwCG1"
     ]
 
 
