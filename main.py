@@ -1,4 +1,3 @@
-import os
 import time
 import chess
 import chess.pgn
@@ -9,6 +8,15 @@ import genanki
 
 # Define the image directory and where to store the final deck
 IMAGE_DIR = 'lichess_puzzle_images/'  # Directory where images are stored
+PUZZLE_LINKS_DIR = 'puzzle_links/'
+
+
+def load_links(link_path):
+    with open(link_path, 'r') as file:
+        content = file.readlines()
+        unique_links = set(link.strip() for link in content)
+    return unique_links
+
 
 def determine_turn(fen):
     # Split the FEN string into its components
@@ -111,10 +119,8 @@ def generate_chess_position_png(pgn, puzzle_id, image_path):
     # Convert the SVG string to PNG using cairosvg and save it as an image
     cairosvg.svg2png(bytestring=svg_data, write_to=f"{IMAGE_DIR}{puzzle_id}.png")
 
-puzzle_urls = [
-    "https://lichess.org/api/puzzle/mIMNE", "https://lichess.org/api/puzzle/GhVXx", "https://lichess.org/api/puzzle/eAp73", "https://lichess.org/api/puzzle/eAp73", "https://lichess.org/api/puzzle/SjgSu", "https://lichess.org/api/puzzle/Bj2eF", "https://lichess.org/api/puzzle/FeXN1", "https://lichess.org/api/puzzle/e1HsI", "https://lichess.org/api/puzzle/A3RFH", "https://lichess.org/api/puzzle/zwCG1"
-    ]
 
+puzzle_urls = load_links(f'{PUZZLE_LINKS_DIR}puzzles_formatted.txt')
 
 # Define the Anki Model
 my_model = genanki.Model(

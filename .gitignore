@@ -1,4 +1,5 @@
-images/
+old/
+puzzle_links/
 lichess_puzzle_images/
 *.apkg
 .idea/
